@@ -53,13 +53,10 @@ class RatingMatrix_ML1M:
         
         columns = ['User_id', 'MovieID', 'Rating', domainA, domainB]
         
-        Movie_Lens_selected_columns = MovieLens1M[columns] 
-        
-        self.ratingMatrix = Movie_Lens_selected_columns[(Movie_Lens_selected_columns[domainA] == 1) | 
-                (Movie_Lens_selected_columns[domainB] == 1)]
+        self.ratingMatrix = MovieLens1M[columns] 
         
         self.ratingMatrix = self.ratingMatrix.groupby('User_id').filter(
-            lambda x: x[domainA].sum() > 0 and x[domainB].sum() > 0)
+            lambda x: x[domainA].sum() > 0 or x[domainB].sum() > 0)
         
         self.domainARatingMatrix = self.ratingMatrix[self.ratingMatrix[domainA] == 1 ]
         
